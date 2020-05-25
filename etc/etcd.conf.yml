@@ -4,7 +4,7 @@
 name: 'default'
 
 # Path to the data directory.
-data-dir:
+data-dir: /etcd-data
 
 # Path to the dedicated wal directory.
 wal-dir:

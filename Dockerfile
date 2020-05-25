@@ -1,6 +1,7 @@
 FROM debian:stretch-slim
 
-VOLUME /tmp
+VOLUME /etcd-data
+VOLUME /config
 
 # define env vars
 ENV ETCD_VER=v3.4.8
@@ -17,12 +18,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y curl
 RUN mkdir -p /opt/etcd \
     && curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz \
     &&  tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /opt/etcd --strip-components=1
-
-# add the config file
-#ADD etc/etcd.conf.yml /opt/etcd/
-
+    
 # clear
 RUN rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
 
-ENTRYPOINT [ "/opt/etcd/etcd", "-config-file", "/tmp/etcd.conf.yml" ]
+ENTRYPOINT [ "/opt/etcd/etcd" ]
 
