@@ -1,6 +1,6 @@
 FROM debian:stretch-slim
 
-VOLUME /etcd-data
+VOLUME /data
 VOLUME /config
 
 # define env vars
@@ -18,9 +18,12 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y curl
 RUN mkdir -p /opt/etcd \
     && curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz \
     &&  tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /opt/etcd --strip-components=1
-    
+
 # clear
 RUN rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
+
+# healthcheck
+HEALTHCHECK CMD curl -s -o /dev/null -w "%{http_code}" http://localhost:2379/metrics || exit 1
 
 ENTRYPOINT [ "/opt/etcd/etcd" ]
 
