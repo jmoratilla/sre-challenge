@@ -25,5 +25,8 @@ RUN rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
 # healthcheck
 HEALTHCHECK CMD curl -s -o /dev/null -w "%{http_code}" http://localhost:2379/metrics || exit 1
 
+# expose ports
+EXPOSE 2379 2380
+
 ENTRYPOINT [ "/opt/etcd/etcd" ]
 
