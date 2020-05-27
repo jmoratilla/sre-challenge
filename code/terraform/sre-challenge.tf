@@ -1,3 +1,22 @@
+resource "aws_security_group" "allow_etcd" {
+    name = "allow_etcd"
+    description = "Allow incoming 2379/tcp (etcd) connections to etcd elb."
+
+    ingress {
+        from_port = 2379
+        to_port = 2379
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    vpc_id = "${aws_vpc.sre_vpc.id}"
+
+    tags {
+        Name = "allow_etcd_sg"
+    }
+}
+
+
 resource "aws_instance" "etcd1" {
   ami           = "ami-056052088e160e8b3"
   instance_type = "t2.micro"
@@ -17,7 +36,10 @@ resource "aws_instance" "etcd1" {
 resource "aws_elb" "etcd_elb" {
   name          = "etcd-elb"
   subnets = ["${aws_subnet.my_subnet.id}"]
-
+  security_groups = [
+    "${aws_security_group.allow_etcd.id}"
+  ]
+  tags = {
   listener {
     instance_port = 2379
     instance_protocol = "http"
