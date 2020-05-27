@@ -1,4 +1,3 @@
-
 resource "aws_instance" "etcd1" {
   ami           = "ami-056052088e160e8b3"
   instance_type = "t2.micro"
@@ -15,5 +14,33 @@ resource "aws_instance" "etcd1" {
   }
 }
 
+resource "aws_elb" "etcd_elb" {
+  name          = "etcd-elb"
+  availability_zones = ["eu-west-1a"]
 
+  listener {
+    instance_port = 2379
+    instance_protocol = "http"
+    lb_port       = 2379
+    lb_protocol   = "http"
+  }
+
+  health_check {
+    healthy_threshold = 2
+    unhealthy_threshold = 3
+    timeout = 3
+    target  = "HTTP:2379/metrics/"
+    interval = 30
+  }
+
+  cross_cone_load_balancing = true
+  idle_timeout = 400
+  connection_draining = true
+  connection_draining_timeout = 400
+  instances = ["${aws_instance.etcd1.id}"]
+  tags = {
+    Name = "etcd-elb"
+    Environment = "development"
+  }
+}
 
