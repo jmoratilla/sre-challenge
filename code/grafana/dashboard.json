@@ -1,6 +1,3 @@
-// 20200527053622
-// https://raw.githubusercontent.com/lwolf/kube-monitoring/master/dashboards/etcd-overview.json
-
 {
   "__inputs": [
     {

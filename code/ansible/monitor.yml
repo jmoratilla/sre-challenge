@@ -5,11 +5,13 @@
 
   handlers:
   - name: prometheus_restart_service
-    service: prometheus
-    state: restarted
+    service: 
+      name: prometheus
+      state: restarted
   - name: grafana_restart_service
-    service: granfana-server
-    state: restarted
+    service: 
+      name: grafana-server
+      state: restarted
 
   tasks:
   - name: prometheus - add target with ec2_sd
@@ -30,17 +32,18 @@
     notify:
     - prometheus_restart_service
 
-  # - name: grafana - create prometheus datasource
-  #   grafana_datasource:
-  #     name: "prometheus"
-  #     grafana_url: "https://grafana.company.com"
-  #     org_id: "1"
-  #     ds_type: "prometheus"
-  #     url: "http://localhost:9090"
+  - name: grafana - create prometheus datasource
+    grafana_datasource:
+      grafana_url: "http://localhost:3000/"
+      name: "prometheus"
+      org_id: "1"
+      ds_type: "prometheus"
+      url: "http://localhost:9090"
 
+  # Not working yet
   # - name: grafana - Import dashboard etcd
   #   grafana_dashboard:
-  #     grafana_url: http://grafana.company.com
+  #     grafana_url: "http://localhost:3000/"
   #     state: present
   #     message: Updated by ansible
   #     overwrite: yes

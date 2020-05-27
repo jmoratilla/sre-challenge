@@ -4,6 +4,13 @@ resource "aws_security_group" "allow_monitor" {
   description = "Allow incoming HTTP connections to Grafana and Prometheus."
 
   ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     from_port = 9090
     to_port = 9090
     protocol = "tcp"
@@ -47,8 +54,49 @@ resource "aws_instance" "monitor" {
     Name = "monitor"
     Environment = "development"
   }
-  provisioner "local-exec" {
-    command = "ansible-playbook -i '${aws_instance.monitor.public_ip},' --private-key ${var.private_key_path} ../ansible/monitor.yml"
-  }  
 
+  provisioner "remote-exec" "create_files"{
+    inline = [
+      "mkdir /home/${var.aws_ssh_user}/files",
+      "mkdir /home/${var.aws_ssh_user}/ansible",
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+  provisioner "file" "create_monitor"{
+    source      = "../ansible/monitor.yml"
+    destination = "/home/${var.aws_ssh_user}/ansible/monitor.yml"
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+  provisioner "file" "create_dashboard" {
+    source      = "../grafana/dashboard.json"
+    destination = "/tmp/etcd.json"
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+  provisioner "remote-exec" "provision"{
+    inline = [
+      "sudo apt-get install -y ansible",
+      "cd ansible; ansible-playbook -c local -i \"localhost,\" monitor.yml",
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
 }
