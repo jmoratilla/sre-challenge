@@ -15,29 +15,29 @@ resource "aws_instance" "benchmark" {
   }
   provisioner "remote-exec" {
     inline = [
-      "mkdir /home/${var.aws_aws_ssh_user}/files",
-      "mkdir /home/${var.aws_aws_ssh_user}/ansible",
+      "mkdir /home/${var.aws_ssh_user}/files",
+      "mkdir /home/${var.aws_ssh_user}/ansible",
     ]
 
     connection {
       type        = "ssh"
-      user        = "${var.aws_aws_ssh_user}"
+      user        = "${var.aws_ssh_user}"
       private_key = "${file("${var.private_key_path}")}"
     }
   }
   provisioner "file" {
     source      = "../ansible/benchmark.yml"
-    destination = "/home/${var.aws_aws_ssh_user}/ansible/benchmark.yml"
+    destination = "/home/${var.aws_ssh_user}/ansible/benchmark.yml"
 
     connection {
       type        = "ssh"
-      user        = "${var.aws_aws_ssh_user}"
+      user        = "${var.aws_ssh_user}"
       private_key = "${file("${var.private_key_path}")}"
     }
   }
   provisioner "file" {
     source      = "../benchmark/tests/test.yml"
-    destination = "/home/${var.aws_aws_ssh_user}/files/test.yml"
+    destination = "/home/${var.aws_ssh_user}/files/test.yml"
 
     connection {
       type        = "ssh"
@@ -54,7 +54,7 @@ resource "aws_instance" "benchmark" {
 
   #   connection {
   #     type        = "ssh"
-  #     user        = "${var.aws_aws_ssh_user}"
+  #     user        = "${var.aws_ssh_user}"
   #     private_key = "${file("${var.private_key_path}")}"
   #   }
   # }
