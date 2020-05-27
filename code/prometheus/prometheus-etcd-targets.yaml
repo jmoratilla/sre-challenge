@@ -1,0 +1,10 @@
+  - job_name: 'aws'
+    ec2_sd_configs:
+      - region: 'eu-west-1'
+        access_key: '${aws_access_key}'
+        secret_key: '${aws_secret_key}'
+        port: 2379
+        filters:
+          - name: tag:Cluster
+            values:
+              - ${etcd_cluster}
