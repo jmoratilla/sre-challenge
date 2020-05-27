@@ -21,14 +21,41 @@ The documentation is under the doc/ subdirectory and in form of ADRs (Architectu
 
 ## About the code test
 
-This challenge is about creating a cloud architecture capable to support an
- etcd cluster installation.  Check the ADRs to know more about the code and
+The goals for this challenge are to create a cloud architecture capable to support
+ an etcd cluster installation.  Check the ADRs to know more about the code and
  the solution.
+
+## Plan stages and status
+
+1. Build images
+    - AWS AMI: done
+    - Docker Image: done
+2. Push images
+    - AWS: done
+    - Docker Hub: done
+2. Provision images
+    - Terraform: done
+3. Configure services
+    - Ansible: half-done
+    - etcd
+4. Monitor: 
+    - Prometheus: done
+    - Grafana: done
+5. Test:
+    - Blazemeter Taurus: half-done
+6. Docker:
+    - 1 instance: done
+    - cluster: nope
+7. CI/CD:
+    - CircleCI[AWS AMIs]: nope
 
 ## Tools used
 
 * [ASDF-VM](https://asdf-vm.com): to install all the packages (like in rbenv)
 * [ADR tools](https://github.com/npryce/adr-tools/blob/master/INSTALL.md): to help with the documentation of the decisions assumed in the project.
+* [Packer](https://www.packer.io): to build the images
+* [Terraform](https://www.terraform.io): to provision the infrastructure and the instances
+* [Ansible](https://www.ansible.com): to configure the services after creation
 * [ConventionalCommits Guidelines](https://www.conventionalcommits.org/en/v1.0.0/): to ease the CHANGELOG and versioning of the code.
 
 ## License
