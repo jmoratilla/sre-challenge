@@ -1,54 +1,54 @@
 
 resource "aws_security_group" "allow_monitor" {
-    name = "allow_monitor"
-    description = "Allow incoming HTTP connections to Grafana and Prometheus."
+  name = "allow_monitor"
+  description = "Allow incoming HTTP connections to Grafana and Prometheus."
 
-    ingress {
-        from_port = 9090
-        to_port = 9090
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-    ingress {
-        from_port = 3000
-        to_port = 3000
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-    ingress {
-        from_port = 22
-        to_port   = 22
-        protocol  = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  ingress {
+    from_port = 9090
+    to_port = 9090
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 3000
+    to_port = 3000
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    egress {
-        from_port = 22
-        to_port   = 22
-        protocol  = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  egress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    egress {
-        from_port = 0
-        to_port   = 65535
-        protocol  = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  egress {
+    from_port = 0
+    to_port   = 65535
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    egress {
-        from_port = 0
-        to_port   = 65535
-        protocol  = "udp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  egress {
+    from_port = 0
+    to_port   = 65535
+    protocol  = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    vpc_id = "${aws_vpc.sre_vpc.id}"
+  vpc_id = "${aws_vpc.sre_vpc.id}"
 
-    tags {
-        Name = "allow_monitor_sg"
-        Environment = "development"
-    }
+  tags {
+    Name = "allow_monitor_sg"
+    Environment = "development"
+  }
 }
 
 resource "aws_instance" "monitor" {

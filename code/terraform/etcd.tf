@@ -1,20 +1,27 @@
 resource "aws_security_group" "allow_etcd" {
-    name = "allow_etcd"
-    description = "Allow incoming 2379/tcp (etcd) connections to etcd elb."
+  name = "allow_etcd"
+  description = "Allow incoming 2379/tcp (etcd) connections to etcd elb."
 
-    ingress {
-        from_port = 2379
-        to_port = 2379
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  ingress {
+    from_port = 2379
+    to_port = 2379
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    vpc_id = "${aws_vpc.sre_vpc.id}"
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    tags = {
-        Name = "allow_etcd_sg"
-        Environment = "development"
-    }
+  vpc_id = "${aws_vpc.sre_vpc.id}"
+
+  tags = {
+    Name = "allow_etcd_sg"
+    Environment = "development"
+  }
 }
 
 
