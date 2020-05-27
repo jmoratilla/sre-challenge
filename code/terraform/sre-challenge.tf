@@ -16,7 +16,7 @@ resource "aws_instance" "etcd1" {
 
 resource "aws_elb" "etcd_elb" {
   name          = "etcd-elb"
-  availability_zones = ["eu-west-1a"]
+  subnets = ["${aws_subnet.my_subnet.id}"]
 
   listener {
     instance_port = 2379
