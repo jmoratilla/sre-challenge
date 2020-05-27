@@ -33,7 +33,7 @@ resource "aws_elb" "etcd_elb" {
     interval = 30
   }
 
-  cross_cone_load_balancing = true
+  cross_zone_load_balancing = true
   idle_timeout = 400
   connection_draining = true
   connection_draining_timeout = 400
