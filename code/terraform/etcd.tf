@@ -59,7 +59,7 @@ resource "aws_elb" "etcd_elb" {
     healthy_threshold = 2
     unhealthy_threshold = 3
     timeout = 3
-    target  = "HTTP:2379/metrics/"
+    target  = "TCP:2379"
     interval = 30
   }
 
