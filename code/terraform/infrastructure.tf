@@ -46,29 +46,16 @@ resource "aws_security_group" "allow_internal_comms" {
   description = "Allow incoming connections from subnet"
 
   ingress {
-    from_port = 0
-    to_port   = 65535
-    protocol  = "tcp"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = [ "${aws_subnet.my_subnet.cidr_block}" ]
   }
-  ingress {
-    from_port = 0
-    to_port   = 65535
-    protocol  = "udp"
-    cidr_blocks = ["${aws_subnet.my_subnet.cidr_block}"]
-  }
 
   egress {
-    from_port = 0
-    to_port   = 65535
-    protocol  = "tcp"
-    cidr_blocks = ["${aws_subnet.my_subnet.cidr_block}"]
-  }
-
-  egress {
-    from_port = 0
-    to_port   = 65535
-    protocol  = "udp"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["${aws_subnet.my_subnet.cidr_block}"]
   }
 
@@ -76,6 +63,32 @@ resource "aws_security_group" "allow_internal_comms" {
 
   tags {
     Name = "allow_internal_comms_sg"
+    Environment = "development"
+  }
+}
+
+resource "aws_security_group" "allow_external_ssh" {
+  name = "allow_ssh"
+  description = "Allow incoming SSH connections."
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  vpc_id = "${aws_vpc.sre_vpc.id}"
+
+  tags {
+    Name = "allow_external_ssh_sg"
     Environment = "development"
   }
 }
