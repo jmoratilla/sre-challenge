@@ -9,37 +9,18 @@ resource "aws_security_group" "allow_monitor" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  
   ingress {
     from_port = 3000
     to_port = 3000
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
-  egress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port = 0
-    to_port   = 65535
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port = 0
-    to_port   = 65535
-    protocol  = "udp"
+  egress {}
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -57,22 +38,13 @@ resource "aws_instance" "monitor" {
   subnet_id     = "${aws_subnet.my_subnet.id}"
   private_ip    = "172.16.10.20"
   key_name      = "${var.aws_key_name}"
+  associate_public_ip_address = true
   vpc_security_group_ids = [
     "${aws_security_group.allow_monitor.id}",
     "${aws_security_group.allow_internal_comms.id}"
   ]
-
   tags = {
     Name = "monitor"
-    Environment = "development"
-  }
-}
-
-resource "aws_eip" "monitor_eip" {
-  instance = "${aws_instance.monitor.id}"
-  vpc      = true
-  tags = {
-    Name = "my-monitor-eip"
     Environment = "development"
   }
 }

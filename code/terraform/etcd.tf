@@ -25,7 +25,7 @@ resource "aws_security_group" "allow_etcd" {
 }
 
 
-resource "aws_instance" "etcd1" {
+resource "aws_instance" "etcd" {
   ami           = "ami-056052088e160e8b3"
   instance_type = "t2.micro"
   subnet_id     = "${aws_subnet.my_subnet.id}"
@@ -39,6 +39,7 @@ resource "aws_instance" "etcd1" {
     Environment = "development"
     Cluster = "my-etcd-cluster"
   }
+  count = 1
 }
 
 resource "aws_elb" "etcd_elb" {
@@ -67,7 +68,7 @@ resource "aws_elb" "etcd_elb" {
   idle_timeout = 400
   connection_draining = true
   connection_draining_timeout = 400
-  instances = ["${aws_instance.etcd1.id}"]
+  instances = ["${aws_instance.etcd.id}"]
   tags = {
     Name = "etcd-elb"
     Environment = "development"
