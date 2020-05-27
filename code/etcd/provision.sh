@@ -36,6 +36,8 @@ User=etcd
 Type=notify
 Environment=ETCD_DATA_DIR=/data
 Environment=ETCD_NAME=%m
+Environment=ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+Environment=ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
 ExecStart=/opt/etcd/etcd
 Restart=always
 RestartSec=10s
