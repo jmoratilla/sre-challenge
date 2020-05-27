@@ -11,8 +11,9 @@ resource "aws_security_group" "allow_etcd" {
 
     vpc_id = "${aws_vpc.sre_vpc.id}"
 
-    tags {
+    tags = {
         Name = "allow_etcd_sg"
+        Environment = "development"
     }
 }
 

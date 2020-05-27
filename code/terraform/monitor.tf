@@ -47,6 +47,7 @@ resource "aws_security_group" "allow_monitor" {
 
     tags {
         Name = "allow_monitor_sg"
+        Environment = "development"
     }
 }
 

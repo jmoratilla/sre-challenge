@@ -15,6 +15,7 @@ resource "aws_subnet" "my_subnet" {
   availability_zone = "eu-west-1a"
   tags = {
     Name = "sre-example"
+    Environment = "development"
   }
 }
 
@@ -32,6 +33,7 @@ resource "aws_route_table" "eu-west-1a-public_rt" {
 
     tags {
         Name = "Public Subnet Route Table"
+        Environment = "development"
     }
 }
 
@@ -75,5 +77,6 @@ resource "aws_security_group" "allow_internal_comms" {
 
     tags {
         Name = "allow_internal_comms_sg"
+        Environment = "development"
     }
 }
