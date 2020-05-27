@@ -1,0 +1,14 @@
+- name: etcd
+  hosts: all
+  become: yes
+  remote_user: admin
+
+  tasks:
+  - name: Generate a Self Signed OpenSSL certificate
+    openssl_certificate:
+      path: /etc/ssl/crt/etcd.crt
+      privatekey_path: /etc/ssl/private/etcd.pem
+      csr_path: /etc/ssl/csr/etcd.csr
+      provider: selfsigned
+
+
