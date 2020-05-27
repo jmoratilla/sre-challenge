@@ -3,12 +3,31 @@
   become: yes
   remote_user: admin
 
+  handlers:
+  - name: etcd_restart_service
+    service:
+      name: etcd
+      state: restarted
+
   tasks:
-  - name: Generate a Self Signed OpenSSL certificate
+  - name: generate a Self Signed OpenSSL certificate
     openssl_certificate:
       path: /etc/ssl/crt/etcd.crt
       privatekey_path: /etc/ssl/private/etcd.pem
       csr_path: /etc/ssl/csr/etcd.csr
       provider: selfsigned
 
+  - name: etcd - provision root user
+    command: /opt/etcd/etcdctl user add root:changeme
+
+  - name: etcd - enable auth
+    command: /opt/etcd/etcdctl auth enable
+    register: etcd_auth
+    
+  - name: systemd - rewrite etcd service
+    copy:
+      src: ../etcd/etcd.service
+      dest: /etc/systemd/system/etcd.service
+    notify:
+    - etcd_restart_service
 

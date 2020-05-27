@@ -39,6 +39,41 @@ resource "aws_instance" "etcd" {
     Environment = "development"
     Cluster = "my-etcd-cluster"
   }
+    provisioner "remote-exec" {
+    inline = [
+      "mkdir /home/${var.aws_ssh_user}/files",
+      "mkdir /home/${var.aws_ssh_user}/ansible",
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+  provisioner "file" {
+    source      = "../ansible/httpd.yml"
+    destination = "/home/${var.aws_ssh_user}/ansible/etcd.yml"
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get install -y ansible",
+      "cd ansible; ansible-playbook -c local -i \"localhost,\" etcd.yml"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
   count = 1
 }
 

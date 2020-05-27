@@ -1,0 +1,5 @@
+- name: etcd
+  hosts: all
+  become: yes
+  remote_user: admin
+
