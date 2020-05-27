@@ -7,5 +7,5 @@ output "Etcd URL" {
 }
 
 output "Benchmark SSH" {
-  value = "ssh -i ~/.ssh/${var.aws_key_name} admin${aws_instance.benchmark.public_dns}"
+  value = "ssh -i ~/.ssh/${var.aws_key_name} admin@${aws_instance.benchmark.public_dns}"
 }
