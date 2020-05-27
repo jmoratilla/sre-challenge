@@ -1,5 +1,10 @@
 #!/bin/bash -e
 
+if [ "$#" != "1" ]
+then
+    echo "Syntax error: $0 <servername>"
+    exit 1
+fi
 
 name=$1
 
