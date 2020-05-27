@@ -3,7 +3,7 @@ output "Grafana URL" {
 }
 
 output "Etcd URL" {
-  value = "http://${aws_elb.etcd_elb.public_dns}:2379/"
+  value = "http://${aws_elb.etcd_elb.dns_name}:2379/"
 }
 
 output "Benchmark SSH" {
