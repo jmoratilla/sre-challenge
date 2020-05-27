@@ -40,7 +40,7 @@ resource "aws_elb" "etcd_elb" {
   security_groups = [
     "${aws_security_group.allow_etcd.id}"
   ]
-  tags = {
+
   listener {
     instance_port = 2379
     instance_protocol = "http"
