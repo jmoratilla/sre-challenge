@@ -6,7 +6,6 @@ This repo contains all the work and docs for a code test.
 
 TO BE DEFINED
 
-
 ## The way to use and run it
 
 First, download the repository using git:
@@ -36,8 +35,7 @@ The goals for this challenge are to create a cloud architecture capable to suppo
 2. Provision images
     - Terraform: done
 3. Configure services
-    - Ansible: half-done
-    - etcd
+    - Ansible: done
 4. Monitor: 
     - Prometheus: done
     - Grafana: done
@@ -45,9 +43,9 @@ The goals for this challenge are to create a cloud architecture capable to suppo
     - Blazemeter Taurus: half-done
 6. Docker:
     - 1 instance: done
-    - cluster: nope
+    - cluster: not yet
 7. CI/CD:
-    - CircleCI[AWS AMIs]: nope
+    - CircleCI[AWS AMIs]: not yet
 
 ## Tools used
 
