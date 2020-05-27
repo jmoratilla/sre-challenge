@@ -29,10 +29,10 @@ To install etcd from a release, perform the following steps:
     # go to directory
     cd /opt/etcd
 
-    # execute static
+    # launch a static cluster
     ./etcd -name etcd1 -data-dir /etcd-data -listen-client-urls http://0.0.0.0:2379 -advertise-client-urls http://0.0.0.0:2379 -listen-peer-urls http://10.0.1.10:2380 -initial-advertise-peer-urls http://0.0.0.0:2380 -initial-cluster-token etcd-cluster-1 -initial-cluster etcd1=http://10.0.1.10:2380,etcd2=http://10.0.1.11:2380,etcd3=http://10.0.1.12:2380 -initial-cluster-state new
 
-    # execute discovery url
+    # launch a dynamic cluster discovered by url
     DISCOVERY_TOKEN=`curl -s https://discovery.etcd.io/new?size=3`
     ./etcd -name etcd1 -data-dir /etcd-data \
      -listen-client-urls http://0.0.0.0:2379 \
@@ -41,7 +41,7 @@ To install etcd from a release, perform the following steps:
      -initial-advertise-peer-urls http://0.0.0.0:2380  \
      -discovery $DISCOVERY_TOKEN
 
-    # execute  discovery dns-srv
+    # launch a dynamic cluster discovered by dns-srv
     ./etcd -name etcd1 -data-dir /etcd-data \
      -listen-client-urls http://0.0.0.0:2379 \
      -advertise-client-urls http://0.0.0.0:2379 \
