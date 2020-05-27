@@ -47,4 +47,49 @@ resource "aws_instance" "monitor" {
     Name = "monitor"
     Environment = "development"
   }
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir /home/${var.aws_ssh_user}/files",
+      "mkdir /home/${var.aws_ssh_user}/ansible",
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+  provisioner "file" {
+    source      = "../ansible/monitor.yml"
+    destination = "/home/${var.aws_ssh_user}/ansible/monitor.yml"
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+  provisioner "file" {
+    source      = "../grafana/provisioning/etcd.yml"
+    destination = "/tmp/etcd.yml"
+
+    connection {
+      type        = "ssh"
+      user        = "${var.ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get install -y ansible",
+      "cd ansible; ansible-playbook -c local -i \"localhost,\" monitor.yml",
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+
 }
