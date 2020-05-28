@@ -54,6 +54,9 @@ The goals for this challenge are to create a cloud architecture capable to suppo
 * [Packer](https://www.packer.io): to build the images
 * [Terraform](https://www.terraform.io): to provision the infrastructure and the instances
 * [Ansible](https://www.ansible.com): to configure the services after creation
+* [Taurus](https://gettaurus.org): a CLI to perform benchmarking tests using JMeter, Selenium, Gatling and others
+* [Prometheus](https://prometheus.io): Collect metrics and alerting system
+* [Grafana](https://grafana.com): A visualization tools for metrics
 * [ConventionalCommits Guidelines](https://www.conventionalcommits.org/en/v1.0.0/): to ease the CHANGELOG and versioning of the code.
 
 ## License
