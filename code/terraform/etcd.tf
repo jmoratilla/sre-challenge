@@ -26,7 +26,7 @@ resource "aws_security_group" "allow_etcd" {
 
 
 resource "aws_instance" "etcd" {
-  ami           = "ami-056052088e160e8b3"
+  ami           = "ami-0a525e58f7b015153"
   instance_type = "t2.micro"
   subnet_id     = "${aws_subnet.my_subnet.id}"
   private_ip    = "172.16.10.11"

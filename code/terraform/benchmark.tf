@@ -1,5 +1,5 @@
 resource "aws_instance" "benchmark" {
-  ami           = "ami-022a22d06184ceebc"
+  ami           = "ami-06a266d8356bcfe6c"
   instance_type = "t2.micro"
   subnet_id     = "${aws_subnet.my_subnet.id}"
   private_ip    = "172.16.10.30"

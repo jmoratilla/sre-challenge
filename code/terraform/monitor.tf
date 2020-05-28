@@ -33,7 +33,7 @@ resource "aws_security_group" "allow_monitor" {
 }
 
 resource "aws_instance" "monitor" {
-  ami           = "ami-022a22d06184ceebc"
+  ami           = "ami-0222a4f3e53768091"
   instance_type = "t2.micro"
   subnet_id     = "${aws_subnet.my_subnet.id}"
   private_ip    = "172.16.10.20"
