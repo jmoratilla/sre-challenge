@@ -45,17 +45,15 @@ resource "aws_instance" "benchmark" {
       private_key = "${file("${var.private_key_path}")}"
     }
   }
-  # I don't see a need right now here.  Benchmark must be done manually
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "sudo apt-get install -y ansible",
-  #     "cd ansible; ansible-playbook -c local -i \"localhost,\" benchmark.yml"
-  #   ]
+  provisioner "remote-exec" {
+    inline = [
+      "cd ansible; ansible-playbook -c local -i \"localhost,\" benchmark.yml"
+    ]
 
-  #   connection {
-  #     type        = "ssh"
-  #     user        = "${var.aws_ssh_user}"
-  #     private_key = "${file("${var.private_key_path}")}"
-  #   }
-  # }
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
 }

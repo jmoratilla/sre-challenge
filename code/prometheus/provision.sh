@@ -6,7 +6,7 @@ main() {
   sudo apt-get update
   sudo apt-get install -y gnupg
   sudo apt-get install -y apt-transport-https
-  sudo apt-get install -y software-properties-common wget
+  sudo apt-get install -y software-properties-common wget ansible
   wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
 
   # add grafana repository 

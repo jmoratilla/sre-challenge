@@ -31,7 +31,9 @@ resource "aws_instance" "etcd" {
   subnet_id     = "${aws_subnet.my_subnet.id}"
   private_ip    = "172.16.10.11"
   key_name      = "${var.aws_key_name}"
+  associate_public_ip_address = true
   vpc_security_group_ids = [
+    "${aws_security_group.allow_external_ssh.id}",
     "${aws_security_group.allow_internal_comms.id}"
   ]
   tags = {
@@ -52,7 +54,7 @@ resource "aws_instance" "etcd" {
     }
   }
   provisioner "file" {
-    source      = "../ansible/httpd.yml"
+    source      = "../ansible/etcd.yml"
     destination = "/home/${var.aws_ssh_user}/ansible/etcd.yml"
 
     connection {
@@ -64,7 +66,6 @@ resource "aws_instance" "etcd" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get install -y ansible",
       "cd ansible; ansible-playbook -c local -i \"localhost,\" etcd.yml"
     ]
 

@@ -4,13 +4,6 @@ resource "aws_security_group" "allow_monitor" {
   description = "Allow incoming HTTP connections to Grafana and Prometheus."
 
   ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
     from_port = 9090
     to_port = 9090
     protocol = "tcp"
@@ -47,6 +40,7 @@ resource "aws_instance" "monitor" {
   key_name      = "${var.aws_key_name}"
   associate_public_ip_address = true
   vpc_security_group_ids = [
+    "${aws_security_group.allow_external_ssh.id}",
     "${aws_security_group.allow_monitor.id}",
     "${aws_security_group.allow_internal_comms.id}"
   ]
@@ -89,7 +83,6 @@ resource "aws_instance" "monitor" {
   }
   provisioner "remote-exec" "provision"{
     inline = [
-      "sudo apt-get install -y ansible",
       "cd ansible; ansible-playbook -c local -i \"localhost,\" monitor.yml",
     ]
 

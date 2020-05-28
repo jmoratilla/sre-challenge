@@ -31,16 +31,16 @@
                       - ${etcd_cluster}
     notify:
     - prometheus_restart_service
+ # Not working yet
+  # - name: grafana - create prometheus datasource
+  #   grafana_datasource:
+  #     grafana_url: "http://localhost:3000/"
+  #     name: "prometheus"
+  #     org_id: "1"
+  #     ds_type: "prometheus"
+  #     url: "http://localhost:9090"
 
-  - name: grafana - create prometheus datasource
-    grafana_datasource:
-      grafana_url: "http://localhost:3000/"
-      name: "prometheus"
-      org_id: "1"
-      ds_type: "prometheus"
-      url: "http://localhost:9090"
-
-  # Not working yet
+ 
   # - name: grafana - Import dashboard etcd
   #   grafana_dashboard:
   #     grafana_url: "http://localhost:3000/"

@@ -1,0 +1,22 @@
+[Unit]
+Description=etcd service
+Documentation=https://github.com/etcd-io/etcd
+After=network.target
+
+[Service]
+User=etcd
+Type=notify
+Environment=ETCD_DATA_DIR=/data
+Environment=ETCD_NAME=%m
+Environment=ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+Environment=ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+Environment=ETCD_TRUSTED_CA_FILE=/etc/ssl/crt/etcd.crt
+Environment=ETCD_CERT_FILE=/etc/ssl/crt/etcd.crt
+Environment=ETCD_KEY_FILE=/etc/ssl/private/etcd.pem
+ExecStart=/opt/etcd/etcd
+Restart=always
+RestartSec=10s
+LimitNOFILE=40000
+
+[Install]
+WantedBy=multi-user.target
