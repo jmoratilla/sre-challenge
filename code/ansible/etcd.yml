@@ -8,10 +8,12 @@
     service:
       name: etcd
       state: restarted
+  - name: reload systemd
+    command: systemctl daemon-reload
 
   tasks:
   - name: generate a Self Signed OpenSSL certificate
-    command: openssl req -x509 -subj '/CN=localhost' -newkey rsa:4096 -keyout /etc/ssl/private/etcd.pem -out /etc/ssl/crt/etcd.crt -nodes -days 365
+    command: openssl req -x509 -subj '/CN=localhost' -newkey rsa:4096 -keyout /etc/ssl/private/etcd.pem -out /etc/ssl/certs/etcd.crt -nodes -days 365
 
   - name: etcd - provision root user
     command: /opt/etcd/etcdctl user add root:changeme
@@ -22,8 +24,11 @@
     
   - name: systemd - rewrite etcd service
     copy:
-      src: ../etcd/etcd.service
+      src: ../files/etcd.service
       dest: /etc/systemd/system/etcd.service
+      owner: root
+      mode: 644
     notify:
+    - reload systemd
     - etcd_restart_service
 

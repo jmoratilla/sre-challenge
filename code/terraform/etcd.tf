@@ -64,6 +64,17 @@ resource "aws_instance" "etcd" {
     }
   }
 
+  provisioner "file" {
+    source      = "../etcd/etcd.service"
+    destination = "/home/${var.aws_ssh_user}/files/etcd.service"
+
+    connection {
+      type        = "ssh"
+      user        = "${var.aws_ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+
   provisioner "remote-exec" {
     inline = [
       "cd ansible; ansible-playbook -c local -i \"localhost,\" etcd.yml"
